@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Apex Digital — AI Design & Marketing Studio</title>
+
+<style>
+/* =====================
+   APEX DIGITAL – STYLES
+   ===================== */
+:root {
+  --bg: #0b0f1a;
+  --panel: #12182a;
+  --primary: #5b7cfa;
+  --secondary: #23d2aa;
+  --text: #e6e9f2;
+  --muted: #9aa4c7;
+  --danger: #ff5c5c;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: radial-gradient(circle at top, #111735, var(--bg));
+  color: var(--text);
+  min-height: 100vh;
+}
+
+header {
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+}
+
+header h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+header p {
+  margin-top: 1rem;
+  color: var(--muted);
+  max-width: 680px;
+  margin-inline: auto;
+}
+
+main {
+  max-width: 1200px;
+  margin: auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), transparent),
+              var(--panel);
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid rgba(255,255,255,0.06);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(0,0,0,.35);
+}
+
+.card h3 {
+  margin-bottom: .5rem;
+}
+
+.card p {
+  font-size: .95rem;
+  color: var(--muted);
+}
+
+.badge {
+  display: inline-block;
+  padding: .35rem .7rem;
+  font-size: .7rem;
+  border-radius: 999px;
+  background: rgba(91,124,250,.15);
+  color: var(--primary);
+  margin-bottom: .75rem;
+}
+
+.actions {
+  text-align: center;
+  margin: 3rem 0 2rem;
+}
+
+button {
+  border: none;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  color: #fff;
+  padding: .9rem 1.5rem;
+  border-radius: 999px;
+  font-size: .95rem;
+  cursor: pointer;
+  margin: .3rem;
+  transition: transform .2s ease, opacity .2s ease;
+}
+
+button.secondary {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,.2);
+}
+
+button:hover {
+  transform: scale(1.05);
+  opacity: .95;
+}
+
+section.ai {
+  margin-top: 3rem;
+  background: linear-gradient(180deg, rgba(91,124,250,.12), transparent),
+              var(--panel);
+  border-radius: 20px;
+  padding: 2rem;
+  border: 1px solid rgba(255,255,255,.08);
+}
+
+.ai h2 {
+  margin-bottom: 1rem;
+}
+
+.ai-log {
+  background: #070b15;
+  border-radius: 12px;
+  padding: 1rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: .85rem;
+  height: 180px;
+  overflow-y: auto;
+  border: 1px solid rgba(255,255,255,.08);
+}
+
+.ai-log div {
+  margin-bottom: .4rem;
+}
+
+.status-ok { color: var(--secondary); }
+.status-warn { color: #f5c542; }
+
+footer {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: var(--muted);
+  font-size: .85rem;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Apex Digital</h1>
+  <p>
+    AI-powered design & marketing studio. Logos, websites, eCommerce,
+    dashboards, content, campaigns — built, managed, and optimized by intelligent agents.
+  </p>
+</header>
+
+<main>
+
+  <div class="grid">
+    <div class="card">
+      <span class="badge">Design</span>
+      <h3>Brand & Graphic Design</h3>
+      <p>Logos, posters, pamphlets, signboards and full visual identity systems.</p>
+    </div>
+
+    <div class="card">
+      <span class="badge">Web</span>
+      <h3>Web & eCommerce</h3>
+      <p>Responsive websites, online stores, dashboards and admin panels.</p>
+    </div>
+
+    <div class="card">
+      <span class="badge">Marketing</span>
+      <h3>Digital Marketing</h3>
+      <p>Email marketing, social media campaigns, ads and analytics.</p>
+    </div>
+
+    <div class="card">
+      <span class="badge">AI</span>
+      <h3>Autonomous AI Agents</h3>
+      <p>Self-managing AI that designs, markets, chats, reports and optimizes.</p>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button onclick="startAI()">Launch AI Studio</button>
+    <button class="secondary" onclick="simulateOrder()">Simulate Client Order</button>
+  </div>
+
+  <section class="ai">
+    <h2>Robyn AI – System Console</h2>
+    <div id="log" class="ai-log"></div>
+  </section>
+
+</main>
+
+<footer>
+  © 2026 Apex Digital • AI-Driven Design & Marketing Platform
+</footer>
+
+<script>
+/* =====================
+   APEX DIGITAL – JS
+   ===================== */
+
+const log = document.getElementById("log");
+
+function writeLog(message, type = "status-ok") {
+  const div = document.createElement("div");
+  div.className = type;
+  div.textContent = "> " + message;
+  log.appendChild(div);
+  log.scrollTop = log.scrollHeight;
+}
+
+function startAI() {
+  log.innerHTML = "";
+  const messages = [
+    "Booting Robyn LLM...",
+    "Loading Design Agent...",
+    "Loading Marketing Agent...",
+    "Loading Finance & Valuation Agent...",
+    "Loading Compliance & Security Agent...",
+    "All agents synchronized.",
+    "System running at 97% autonomy."
+  ];
+
+  messages.forEach((msg, i) => {
+    setTimeout(() => writeLog(msg), i * 600);
+  });
+}
+
+function simulateOrder() {
+  writeLog("New client request received.", "status-warn");
+  setTimeout(() => writeLog("AI analyzing requirements..."), 600);
+  setTimeout(() => writeLog("Design Agent generating concepts..."), 1200);
+  setTimeout(() => writeLog("Marketing Agent preparing campaign assets..."), 1800);
+  setTimeout(() => writeLog("Invoice & payment workflow initialized."), 2400);
+  setTimeout(() => writeLog("Order completed autonomously ✔"), 3000);
+}
+</script>
+
+</body>
+</html>
