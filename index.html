@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Apex Digital | AI Design & Marketing Studio</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* =========================
+   APEX DIGITAL – UI CORE
+   ========================= */
+:root{
+  --bg:#070b16;
+  --panel:#0f162b;
+  --accent:#5b7cfa;
+  --accent2:#23d2aa;
+  --text:#e9ecf6;
+  --muted:#9aa4c7;
+  --warn:#f6c945;
+  --danger:#ff6b6b;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  background:radial-gradient(circle at top,#101840,var(--bg));
+  color:var(--text);
+  font-family:system-ui,-apple-system,Segoe UI,Roboto;
+}
+
+header{
+  padding:3rem 1.5rem;
+  text-align:center;
+}
+
+h1{
+  font-size:clamp(2.2rem,4vw,3.2rem);
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;
+  color:transparent;
+}
+
+p{color:var(--muted);margin-top:1rem}
+
+main{max-width:1200px;margin:auto;padding:2rem}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:1.5rem;
+}
+
+.card{
+  background:linear-gradient(180deg,rgba(255,255,255,.04),transparent),var(--panel);
+  border-radius:16px;
+  padding:1.5rem;
+  border:1px solid rgba(255,255,255,.08);
+}
+
+.card h3{margin:.5rem 0}
+.card small{color:var(--muted)}
+
+.badge{
+  font-size:.7rem;
+  padding:.3rem .7rem;
+  border-radius:999px;
+  background:rgba(91,124,250,.15);
+  color:var(--accent);
+}
+
+button{
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  border:none;
+  color:#fff;
+  padding:.8rem 1.4rem;
+  border-radius:999px;
+  cursor:pointer;
+  margin:.4rem .3rem;
+}
+
+button.secondary{
+  background:transparent;
+  border:1px solid rgba(255,255,255,.2);
+}
+
+section{
+  margin-top:3rem;
+}
+
+.console{
+  background:#040815;
+  border-radius:12px;
+  padding:1rem;
+  height:220px;
+  overflow:auto;
+  font-family:ui-monospace,monospace;
+  font-size:.85rem;
+  border:1px solid rgba(255,255,255,.1);
+}
+
+.ok{color:var(--accent2)}
+.warn{color:var(--warn)}
+.err{color:var(--danger)}
+
+footer{
+  text-align:center;
+  padding:2rem;
+  font-size:.8rem;
+  color:var(--muted);
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Apex Digital</h1>
+  <p>Autonomous AI-driven Design & Marketing Studio</p>
+</header>
+
+<main>
+
+<!-- SERVICES -->
+<div class="grid">
+  <div class="card">
+    <span class="badge">Design</span>
+    <h3>Brand & Graphic</h3>
+    <small>Logos, posters, pamphlets, signage</small>
+  </div>
+  <div class="card">
+    <span class="badge">Web</span>
+    <h3>Web & eCommerce</h3>
+    <small>Sites, dashboards, admin panels</small>
+  </div>
+  <div class="card">
+    <span class="badge">Marketing</span>
+    <h3>Digital Marketing</h3>
+    <small>Email, social, ads, analytics</small>
+  </div>
+  <div class="card">
+    <span class="badge">AI</span>
+    <h3>Autonomous AI Agents</h3>
+    <small>Self-managing, self-optimizing</small>
+  </div>
+</div>
+
+<!-- ACTIONS -->
+<section>
+  <button onclick="bootSystem()">Boot AI Platform</button>
+  <button onclick="newClient()">Simulate Client Order</button>
+  <button class="secondary" onclick="investorMode()">Investor Valuation</button>
+</section>
+
+<!-- AI CONSOLE -->
+<section>
+  <h3>Robyn AI – Unified System Console</h3>
+  <div id="console" class="console"></div>
+</section>
+
+</main>
+
+<footer>
+  © Apex Digital • Fully AI-Operated Platform
+</footer>
+
+<script>
+/* =========================
+   APEX DIGITAL – CORE AI
+   ========================= */
+
+const logBox = document.getElementById("console");
+
+function log(msg,type="ok"){
+  const d=document.createElement("div");
+  d.className=type;
+  d.textContent="> "+msg;
+  logBox.appendChild(d);
+  logBox.scrollTop=logBox.scrollHeight;
+}
+
+/* ===== AI AGENT FACTORY ===== */
+const AI = {
+  status:false,
+  revenue:0,
+  orders:0,
+  boot(){
+    log("Initializing Robyn LLM...");
+    setTimeout(()=>log("Spawning Design Agent..."),500);
+    setTimeout(()=>log("Spawning Marketing Agent..."),900);
+    setTimeout(()=>log("Spawning Finance & Valuation Agent..."),1300);
+    setTimeout(()=>log("Spawning Compliance & Security Agent..."),1700);
+    setTimeout(()=>{
+      this.status=true;
+      log("All AI agents synchronized");
+      log("System autonomy: 97%");
+    },2100);
+  },
+  createOrder(){
+    this.orders++;
+    const value = Math.floor(Math.random()*8000)+2000;
+    this.revenue += value;
+
+    log("Client request received","warn");
+    setTimeout(()=>log("AI analyzing requirements"),500);
+    setTimeout(()=>log("Design Agent generating assets"),900);
+    setTimeout(()=>log("Marketing Agent creating campaign"),1300);
+    setTimeout(()=>log("Invoice issued: R"+value),1700);
+    setTimeout(()=>this.payout(value),2100);
+  },
+  payout(amount){
+    log("Distributing revenue","warn");
+    log("Owner (35%): R"+(amount*0.35).toFixed(2));
+    log("African Bank (15%): R"+(amount*0.15).toFixed(2));
+    log("AI Ops (20%): R"+(amount*0.20).toFixed(2));
+    log("Reserve (20%): R"+(amount*0.20).toFixed(2));
+  },
+  valuation(){
+    const monthly = this.revenue || 50000;
+    const valuation = monthly * 12 * 6;
+    log("Investor Mode Activated","warn");
+    log("Monthly Revenue Projection: R"+monthly);
+    log("Annual Run Rate: R"+(monthly*12));
+    log("Platform Valuation (6x): R"+valuation);
+  }
+};
+
+/* ===== UI ACTIONS ===== */
+function bootSystem(){
+  logBox.innerHTML="";
+  AI.boot();
+}
+
+function newClient(){
+  if(!AI.status){
+    log("System not booted","err");
+    return;
+  }
+  AI.createOrder();
+}
+
+function investorMode(){
+  AI.valuation();
+}
+</script>
+
+</body>
+</html>
