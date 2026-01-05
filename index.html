@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>HollywoodBets AI – Demo</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #0b0f14;
+    color: #eaeaea;
+}
+
+header {
+    background: linear-gradient(90deg, #111827, #1f2937);
+    padding: 20px;
+    text-align: center;
+}
+
+header h1 {
+    color: #22c55e;
+    margin: 0;
+}
+
+.container {
+    padding: 20px;
+}
+
+.section {
+    background: #111827;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.section h2 {
+    color: #38bdf8;
+    margin-top: 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #1f2937;
+}
+
+th {
+    background: #1f2937;
+}
+
+.win {
+    background: #00ff66;
+    color: #000;
+    font-weight: bold;
+}
+
+.loss {
+    background: #ff0033;
+    color: #fff;
+    font-weight: bold;
+}
+
+.badge {
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+}
+
+.badge-ai {
+    background: #7c3aed;
+}
+
+.badge-value {
+    background: #f59e0b;
+    color: #000;
+}
+
+button {
+    background: #22c55e;
+    color: #000;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    background: #16a34a;
+}
+
+.flex {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.card {
+    background: #020617;
+    border-radius: 10px;
+    padding: 15px;
+    flex: 1;
+    min-width: 250px;
+}
+
+.bankroll {
+    font-size: 32px;
+    color: #22c55e;
+    font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>HollywoodBets AI Predictor (Single-Page Demo)</h1>
+    <p>Multi-Agent Synthetic Intelligence • Offline Preview</p>
+</header>
+
+<div class="container">
+
+<div class="section flex">
+    <div class="card">
+        <h2>💰 Bankroll</h2>
+        <div id="bankroll" class="bankroll">R 1,000.00</div>
+        <p>Strategic Agent manages slow growth</p>
+    </div>
+
+    <div class="card">
+        <h2>🧠 AI Agents</h2>
+        <p><span class="badge badge-ai">Deep Agent</span> Race analysis</p>
+        <p><span class="badge badge-ai">Strategic Agent</span> Stake sizing</p>
+        <p><span class="badge badge-ai">Workflow Agent</span> Pick6 & Jackpot</p>
+    </div>
+</div>
+
+<div class="section">
+    <h2>🏇 Punters Challenge – AI Predictions</h2>
+    <table id="raceTable">
+        <thead>
+            <tr>
+                <th>Race</th>
+                <th>Horse</th>
+                <th>Odds</th>
+                <th>Win %</th>
+                <th>Stake</th>
+                <th>EV</th>
+                <th>Result</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <br>
+    <button onclick="simulateResults()">Simulate Results</button>
+</div>
+
+<div class="section">
+    <h2>🎯 Pick 6 / Jackpot (Top 1 Horse Per Race)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Combination</th>
+                <th>Win Probability</th>
+                <th>Expected Value</th>
+            </tr>
+        </thead>
+        <tbody id="comboTable"></tbody>
+    </table>
+</div>
+
+</div>
+
+<script>
+// -------------------- MOCK DATA --------------------
+let bankroll = 1000;
+
+const races = [
+    { race: 1, horse: "Lightning", odds: 5.5 },
+    { race: 2, horse: "Storm", odds: 8.5 },
+    { race: 3, horse: "Flash", odds: 6.0 }
+];
+
+// -------------------- AI LOGIC (SIMULATED) --------------------
+function deepAgentPredict(odds) {
+    return Math.min(0.85, Math.max(0.15, 1 / odds + Math.random() * 0.15));
+}
+
+function strategicStake(prob, odds) {
+    return Math.round(bankroll * prob * 0.05);
+}
+
+// -------------------- RENDER TABLE --------------------
+const tbody = document.querySelector("#raceTable tbody");
+races.forEach(r => {
+    r.winProb = deepAgentPredict(r.odds);
+    r.stake = strategicStake(r.winProb, r.odds);
+    r.ev = (r.winProb * r.odds).toFixed(2);
+    r.result = null;
+
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+        <td>${r.race}</td>
+        <td>${r.horse}</td>
+        <td>${r.odds}</td>
+        <td>${(r.winProb * 100).toFixed(1)}%</td>
+        <td>R ${r.stake}</td>
+        <td><span class="badge badge-value">${r.ev}</span></td>
+        <td>-</td>
+    `;
+    tbody.appendChild(tr);
+});
+
+// -------------------- PICK 6 / JACKPOT --------------------
+const combo = races.map(r => r.horse).join(" | ");
+const comboProb = races.reduce((a, b) => a * b.winProb, 1);
+const comboEV = races.reduce((a, b) => a * b.odds, 1) * comboProb;
+
+document.getElementById("comboTable").innerHTML = `
+<tr>
+    <td>${combo}</td>
+    <td>${(comboProb * 100).toFixed(2)}%</td>
+    <td>${comboEV.toFixed(2)}</td>
+</tr>
+`;
+
+// -------------------- SIMULATE RESULTS --------------------
+function simulateResults() {
+    const rows = tbody.querySelectorAll("tr");
+
+    rows.forEach((row, i) => {
+        const win = Math.random() < races[i].winProb;
+        const cell = row.children[6];
+
+        if (win) {
+            const payout = races[i].stake * races[i].odds;
+            bankroll += payout - races[i].stake;
+            cell.textContent = "WIN";
+            cell.className = "win";
+        } else {
+            bankroll -= races[i].stake;
+            cell.textContent = "LOSS";
+            cell.className = "loss";
+        }
+    });
+
+    document.getElementById("bankroll").textContent = "R " + bankroll.toFixed(2);
+}
+</script>
+
+</body>
+</html>
