@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Costbyte – Get Jobs While You Sleep</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* ---------- GLOBAL ---------- */
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f4f6f8;
+  color: #1f2937;
+}
+
+h1, h2, h3 {
+  margin: 0;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 20px;
+  font-size: 16px;
+}
+
+/* ---------- HEADER ---------- */
+header {
+  background: linear-gradient(135deg, #16a34a, #22c55e);
+  color: white;
+  padding: 30px;
+  text-align: center;
+}
+
+header h1 {
+  font-size: 36px;
+}
+
+header p {
+  margin-top: 10px;
+  font-size: 18px;
+}
+
+/* ---------- CONTAINER ---------- */
+.container {
+  max-width: 1100px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* ---------- CARDS ---------- */
+.card {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  margin-bottom: 20px;
+}
+
+/* ---------- GRID ---------- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+/* ---------- BUTTONS ---------- */
+.primary {
+  background: #16a34a;
+  color: white;
+}
+
+.primary:hover {
+  background: #15803d;
+}
+
+.secondary {
+  background: #2563eb;
+  color: white;
+}
+
+/* ---------- PROGRESS ---------- */
+.progress-bg {
+  width: 100%;
+  background: #e5e7eb;
+  border-radius: 20px;
+  height: 18px;
+  margin-top: 8px;
+}
+
+.progress-fill {
+  height: 18px;
+  background: linear-gradient(90deg, #22c55e, #16a34a);
+  border-radius: 20px;
+  width: 0%;
+  transition: width 1s ease;
+}
+
+/* ---------- BADGE ---------- */
+.badge {
+  display: inline-block;
+  background: #facc15;
+  color: #78350f;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+/* ---------- JOB ---------- */
+.job {
+  border-left: 6px solid #16a34a;
+  padding-left: 12px;
+  margin-bottom: 12px;
+}
+
+/* ---------- FOOTER ---------- */
+footer {
+  text-align: center;
+  padding: 20px;
+  font-size: 14px;
+  color: #6b7280;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Costbyte</h1>
+  <p>AI rewrites your CV and applies for jobs while you sleep 🇿🇦</p>
+</header>
+
+<div class="container">
+
+  <!-- REGISTRATION -->
+  <div class="card">
+    <h2>1️⃣ Applicant Registration (Demo)</h2>
+    <p>Upload your CV and let AI do the work.</p>
+    <textarea id="cvInput" rows="5" style="width:100%;margin-top:10px;" placeholder="Paste your CV text here..."></textarea>
+    <button class="primary" style="margin-top:12px;" onclick="rewriteCV()">Rewrite CV with AI</button>
+  </div>
+
+  <!-- AI CV OUTPUT -->
+  <div class="card">
+    <h2>2️⃣ AI-Rewritten CV</h2>
+    <pre id="aiCV" style="white-space:pre-wrap;color:#065f46;">Waiting for CV...</pre>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="card">
+    <h2>3️⃣ Applicant Dashboard</h2>
+
+    <div class="grid">
+      <div>
+        <h3>Jobs Applied Today</h3>
+        <p id="appliedToday" style="font-size:32px;font-weight:bold;">0</p>
+      </div>
+
+      <div>
+        <h3>Employment Readiness</h3>
+        <div class="progress-bg">
+          <div id="readinessBar" class="progress-fill"></div>
+        </div>
+        <div class="badge" id="streakBadge">🔥 0-day streak</div>
+      </div>
+
+      <div>
+        <h3>Status</h3>
+        <p id="statusText">Waiting for AI actions…</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- JOB MATCHING -->
+  <div class="card">
+    <h2>4️⃣ Jobs Matched & Auto-Applied</h2>
+    <div id="jobs"></div>
+    <button class="secondary" onclick="autoApply()">Run Auto-Apply</button>
+  </div>
+
+</div>
+
+<footer>
+  Costbyte © South Africa • AI-Driven Employment Platform
+</footer>
+
+<script>
+/* ---------- STATE ---------- */
+let readiness = 0;
+let applied = 0;
+let streak = 0;
+
+/* ---------- AI CV REWRITE (SIMULATED) ---------- */
+function rewriteCV() {
+  const input = document.getElementById("cvInput").value;
+  if (!input.trim()) {
+    alert("Please paste your CV text first.");
+    return;
+  }
+
+  document.getElementById("aiCV").innerText =
+`PROFESSIONAL CV – AI OPTIMISED
+
+Highly motivated South African professional with proven experience.
+Strong communication skills, adaptability, and results-driven mindset.
+
+KEY SKILLS
+• Problem solving
+• Team collaboration
+• Time management
+• Computer literacy
+
+CAREER OBJECTIVE
+Seeking a stable position with growth opportunities where skills can be applied effectively.`;
+
+  readiness = 60;
+  streak = 1;
+  updateDashboard("CV rewritten successfully ✔");
+}
+
+/* ---------- AUTO APPLY ---------- */
+function autoApply() {
+  const jobList = [
+    "Junior Admin Assistant – Johannesburg",
+    "Call Centre Agent – Cape Town",
+    "Warehouse Clerk – Durban",
+    "Retail Sales Assistant – Pretoria"
+  ];
+
+  const jobsDiv = document.getElementById("jobs");
+  jobsDiv.innerHTML = "";
+
+  jobList.forEach(job => {
+    const div = document.createElement("div");
+    div.className = "job";
+    div.innerHTML = `<strong>${job}</strong><br>Applied automatically ✔`;
+    jobsDiv.appendChild(div);
+  });
+
+  applied += jobList.length;
+  readiness = Math.min(100, readiness + 20);
+  streak += 1;
+
+  updateDashboard("Auto-apply completed. WhatsApp updates sent 📲");
+}
+
+/* ---------- DASHBOARD UPDATE ---------- */
+function updateDashboard(status) {
+  document.getElementById("appliedToday").innerText = applied;
+  document.getElementById("readinessBar").style.width = readiness + "%";
+  document.getElementById("streakBadge").innerText = `🔥 ${streak}-day streak`;
+  document.getElementById("statusText").innerText = status;
+}
+</script>
+
+</body>
+</html>
